@@ -17,3 +17,4 @@ def load_filtered_corpus() -> typing.Generator:
     for l in f:
         yield l.strip()
     f.close()
+    raise StopIteration()
