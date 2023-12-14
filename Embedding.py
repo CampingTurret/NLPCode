@@ -5,6 +5,7 @@ import GeneralHelperFunctions
 import typing
 import pandas as pd
 
+
 class RestartableCurpus():
 
     def __init__(self, corpus: typing.Generator) -> None:
