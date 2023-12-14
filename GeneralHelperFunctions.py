@@ -1,4 +1,5 @@
 import typing
+import time
 
 def safe_filtered_corpus(gen: typing.Generator) -> None:
     f = open('SaveFilteredCorpus.txt', 'w')
@@ -18,13 +19,10 @@ def load_data() -> typing.Generator:
     f = open('cars_comments.ndjson', 'rb')
     for l in f:
         line = json.loads(l)
-        yield line
+        yield line['body']
     f = open('cars_submissions.ndjson', 'rb')
     for l in f:
         line = json.loads(l)
-        yield line
+        yield line['selftext']
 
-for i, l in enumerate(load_data()):
-    if i == 800000:
-        print(l)
-    
+
