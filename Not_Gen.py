@@ -1,15 +1,15 @@
 import typing
 
 
-def Not_filter(PrevGen: typing.Generator, EndOfLine = "<>"):
+def Not_filter(PrevGen: typing.Generator, EndOfLine = "<>", Sarcasm = '</s'):
 
     for line in PrevGen:
         line: str = line
-        if not (('not' in line) or ( '</s>' in line)):
+        if not (('not' in line) or ( Sarcasm in line)):
             yield line
         else:
             StartPositive = True
-            if ( '</s>' in line):
+            if ( Sarcasm in line):
                  StartPositive = False
             Positive = StartPositive
             LineList = line.split(' ')
@@ -22,7 +22,7 @@ def Not_filter(PrevGen: typing.Generator, EndOfLine = "<>"):
                     continue
                 if (Positive is False):
                     LineList[i] = 'NOT_' + w
-                if ( '</s>' == w):
+                if ( Sarcasm == w):
                     LineList[i] = ''
                
 
