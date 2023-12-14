@@ -1,11 +1,5 @@
 import typing
 
-def Gen2Corpus(gen: typing.Generator) -> list[str]:
-    corpus = []
-    for s in gen:
-        corpus.append(s)
-    return tuple(corpus)
-
 def safe_filtered_corpus(gen: typing.Generator) -> None:
     f = open('SaveFilteredCorpus.txt', 'w')
     for s in gen:

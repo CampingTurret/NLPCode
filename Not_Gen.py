@@ -21,7 +21,9 @@ def Not_filter(PrevGen: typing.Generator, EndOfLine = "<>"):
                     Positive = StartPositive
                     continue
                 if (Positive is False):
-                    LineList[i] == 'NOT_' + w
+                    LineList[i] = 'NOT_' + w
+                if ( '</s>' == w):
+                    LineList[i] = ''
                
 
             NewLine = " ".join(LineList)
