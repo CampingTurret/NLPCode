@@ -1,7 +1,7 @@
 import typing
 
 
-def Not_filter(PrevGen: typing.Generator, EndOfLine = "<>", Sarcasm = '</s'):
+def Not_filter(PrevGen: typing.Generator, EndOfLine = "<>", Sarcasm = '</s>'):
 
     for line in PrevGen:
         line: str = line
