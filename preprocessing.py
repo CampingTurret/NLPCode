@@ -1,6 +1,7 @@
 import re
 import string
 import contractions
+import typing 
 
 # Case folding
 def case_folding(text):
@@ -36,14 +37,17 @@ def text_cleaning(text, func_list):
     
     return text
 
-def dataset_cleaning(text_list):
-    # Removing deleted and removed comments
-    no_del_text_list = [text for text in text_list if text not in ['[deleted]', '[removed]']]
-
-    # Applying preprocessing functions to each text
-    func_list = [case_folding, remove_links, remove_punctuation, expand_contractions]
-    clean_text = [text_cleaning(text, func_list) for text in no_del_text_list]
-    return clean_text
+def dataset_cleaning(text_gen: typing.Generator):
     
-test_dataset = ['Hello!!!', '[deleted]', '[removed]', 'I cant wait', "I wouldn't", ' check this link: www.tudelft.n']
-print(dataset_cleaning(test_dataset))
+    for text in text_gen:
+
+        # Applying preprocessing functions to each text
+        func_list = [case_folding, remove_links, remove_punctuation, expand_contractions]
+        clean_text = text
+        for op in func_list:
+            clean_text = op(clean_text)
+        yield clean_text
+
+if __name__ == '__main__':
+    test_dataset = ['Hello!!!', '[deleted]', '[removed]', 'I cant wait', "I wouldn't", ' check this link: www.tudelft.n']
+    print(list(dataset_cleaning(test_dataset)))

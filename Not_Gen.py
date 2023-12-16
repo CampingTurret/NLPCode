@@ -28,5 +28,5 @@ def Not_filter(PrevGen: typing.Generator, EndOfLine = "<>", Sarcasm = '</s>'):
 
             NewLine = " ".join(LineList)
             yield NewLine
-    raise StopIteration()
+    
     

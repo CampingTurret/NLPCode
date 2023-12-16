@@ -17,7 +17,7 @@ class RestartableCurpus():
         
 
 def Word2Vec(corpus: typing.Generator | None = None) -> gensim.models.Word2Vec:
-    W2V = gensim.models.Word2Vec(sentences=corpus, min_count= 20, window=8,vector_size=1000, epochs= 20, sg=1, workers= os.cpu_count()*2)
+    W2V = gensim.models.Word2Vec(sentences=corpus, min_count= 20, window=8,vector_size=1000, epochs= 10, sg=1, workers= os.cpu_count()*2)
     return W2V
 
 
@@ -38,7 +38,7 @@ def get_pos_list(W2V: gensim.models.keyedvectors) -> list:
             l.append(i)
     return l
 
-def get_neg_list(W2V: gensim.models.keyedvectors) -> list:
+def get_neg_list(W2V: gensim.models.KeyedVectors) -> list:
     l = []
     f1 = open('negative-words.txt')
     for i in f1:

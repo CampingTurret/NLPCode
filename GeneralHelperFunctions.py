@@ -12,7 +12,7 @@ def load_filtered_corpus() -> typing.Generator:
     for l in f:
         yield l.strip()
     f.close()
-    raise StopIteration()
+    
 
 def load_data() -> typing.Generator:
     import json
@@ -24,9 +24,9 @@ def load_data() -> typing.Generator:
     for l in f:
         line = json.loads(l)
         yield line['selftext']
-    raise StopIteration()
+    
 
 def lower(gen: typing.Generator) -> typing.Generator:
     for i in gen:
         yield i.lower()
-    raise StopIteration()
+    
