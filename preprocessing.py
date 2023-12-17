@@ -2,6 +2,8 @@ import re
 import string
 import contractions
 import typing 
+import emoji
+from nltk.tokenize import sent_tokenize
 
 # Case folding
 def case_folding(text):
@@ -13,17 +15,22 @@ def remove_links(text):
     url_pattern = re.compile(r'https?://\S+|www\.\S+')
 
     # Use the sub function to replace matched URLs with an empty string
-    text_without_links = url_pattern.sub('', text)
+    text_without_links = url_pattern.sub('.', text)
 
     return text_without_links
 
 # Removing punctuation
 def remove_punctuation(text):
-    translator = str.maketrans("", "", string.punctuation)
-    text_without_punctuation = text.translate(translator)
+    text = sent_tokenize(text)
+    translator = str.maketrans("", "", string.punctuation.replace('/', ''))
+    new_text = []
+    for i in text:
+        filtere = i.translate(translator)
+        if not filtere == '':
+            new_text.append(emoji.demojize(' <st>' + filtere + '</st>'))
+            
     
-    return text_without_punctuation
-
+    return ''.join(new_text)
 # Expanding contractions
 def expand_contractions(text):
     expanded_text = contractions.fix(text)
@@ -49,5 +56,5 @@ def dataset_cleaning(text_gen: typing.Generator):
         yield clean_text
 
 if __name__ == '__main__':
-    test_dataset = ['Hello!!!', '[deleted]', '[removed]', 'I cant wait', "I wouldn't", ' check this link: www.tudelft.n']
+    test_dataset = ['Hello!!!', '[deleted]', '[removed]', 'I cant wait', "I wouldn't ", ' check this link: www.tudelft.nl hello']
     print(list(dataset_cleaning(test_dataset)))

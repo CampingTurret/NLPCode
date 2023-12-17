@@ -2,7 +2,7 @@ import typing
 import time
 
 def safe_filtered_corpus(gen: typing.Generator) -> None:
-    f = open('SaveFilteredCorpus.txt', 'w')
+    f = open('SaveFilteredCorpus.txt', 'w', encoding='utf-8')
     for s in gen:
         f.write(s + '\n')
     f.close()
