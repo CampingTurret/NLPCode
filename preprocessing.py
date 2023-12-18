@@ -27,7 +27,7 @@ def remove_punctuation(text):
     for i in text:
         filtere = i.translate(translator)
         if not filtere == '':
-            new_text.append(emoji.demojize(' <st>' + filtere + '</st>'))
+            new_text.append(emoji.demojize(' <st> ' + filtere + ' </st> '))
             
     
     return ''.join(new_text)
@@ -50,7 +50,7 @@ def dataset_cleaning(text_gen: typing.Generator):
 
         # Applying preprocessing functions to each text
         func_list = [case_folding, remove_links, remove_punctuation, expand_contractions]
-        clean_text = text
+        clean_text = (''.join(text.split('/n'))).replace(r'/n', "")
         for op in func_list:
             clean_text = op(clean_text)
         yield clean_text

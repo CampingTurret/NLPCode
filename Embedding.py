@@ -8,16 +8,18 @@ import pandas as pd
 
 class RestartableCurpus():
 
-    def __init__(self, corpus: typing.Generator) -> None:
+    def __init__(self) -> None:
         """Corpus has to be a generator"""
-        GeneralHelperFunctions.safe_filtered_corpus(corpus)
     
     def __iter__(self) -> typing.Generator:
-        return GeneralHelperFunctions.load_filtered_corpus()
+        def mini_gen() -> list[str]:
+            for i in GeneralHelperFunctions.load_filtered_corpus():
+                yield i.split(" ")
+        return mini_gen()
         
 
 def Word2Vec(corpus: typing.Generator | None = None) -> gensim.models.Word2Vec:
-    W2V = gensim.models.Word2Vec(sentences=corpus, min_count= 20, window=8,vector_size=1000, epochs= 10, sg=1, workers= os.cpu_count()*2)
+    W2V = gensim.models.Word2Vec(sentences=corpus, min_count= 2, window=8,vector_size=1000, epochs= 4, sg=1, workers= os.cpu_count()*2)
     return W2V
 
 
@@ -34,15 +36,18 @@ def get_pos_list(W2V: gensim.models.keyedvectors) -> list:
     l = []
     f1 = open('positive-words.txt')
     for i in f1:
-        if i in W2V.Vocab():
+        i = i.strip()
+        if i in W2V.key_to_index.keys():
             l.append(i)
     return l
 
 def get_neg_list(W2V: gensim.models.KeyedVectors) -> list:
     l = []
     f1 = open('negative-words.txt')
+    print(W2V.key_to_index.keys())
     for i in f1:
-        if i in W2V.Vocab():
+        i = i.strip()
+        if i in W2V.key_to_index.keys():
             l.append(i)
     return l
 
@@ -54,8 +59,8 @@ def CheckProximityUnloaded(w1: list[float] | float, w2: list[float] | float) -> 
     if isinstance(w2, float):
         w2 = [w2]
     arr = np.empty((len(w1), len(w2)), dtype=float)    
+    print(len(w2))
     for i1, First in enumerate(w1):
         arr[i1,:] = W2V.distances(First, w2)
-
-    return pd.DataFrame(arr, w2, w1)
+    return pd.DataFrame(arr, w1, w2)
         

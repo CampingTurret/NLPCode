@@ -8,7 +8,7 @@ def safe_filtered_corpus(gen: typing.Generator) -> None:
     f.close()
 
 def load_filtered_corpus() -> typing.Generator:
-    f = open('SaveFilteredCorpus.txt', 'r')
+    f = open('SaveFilteredCorpus.txt', 'r', encoding='utf-8')
     for l in f:
         yield l.strip()
     f.close()
