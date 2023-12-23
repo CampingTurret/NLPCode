@@ -19,7 +19,7 @@ class RestartableCurpus():
         
 
 def Word2Vec(corpus: typing.Generator | None = None) -> gensim.models.Word2Vec:
-    W2V = gensim.models.Word2Vec(sentences=corpus, min_count= 2, window=8,vector_size=1000, epochs= 4, sg=1, workers= os.cpu_count()*2)
+    W2V = gensim.models.Word2Vec(sentences=corpus, min_count= 20, window=5,vector_size=100, epochs= 5, sg=1, workers= os.cpu_count()*2)
     return W2V
 
 
@@ -51,16 +51,21 @@ def get_neg_list(W2V: gensim.models.KeyedVectors) -> list:
             l.append(i)
     return l
 
-
-def CheckProximityUnloaded(w1: list[float] | float, w2: list[float] | float) -> pd.DataFrame:
+def make_embeding_vector(words: list):
     W2V = LoadWord2VecStripped()
-    if isinstance(w1, float):
-        w1 = [w1]
-    if isinstance(w2, float):
-        w2 = [w2]
-    arr = np.empty((len(w1), len(w2)), dtype=float)    
+    emb = 0
+    for w in words:
+        emb += W2V.get_vector(w)
+    return emb/len(words)
+
+def CheckProximityUnloaded(w1: list[str], w2: list[str]) -> pd.DataFrame:
+    W2V = LoadWord2VecStripped()
+    vembed = make_embeding_vector(w2)
+    
+    arr = np.empty((len(w1)), dtype=float)    
     print(len(w2))
     for i1, First in enumerate(w1):
-        arr[i1,:] = W2V.distances(First, w2)
-    return pd.DataFrame(arr, w1, w2)
+        distance = np.sqrt(np.sum(np.square(vembed - W2V.get_vector(First))))
+        arr[i1] = distance
+    return pd.DataFrame(arr, w1 , ['distance'])
         
