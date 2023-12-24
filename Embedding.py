@@ -19,7 +19,7 @@ class RestartableCurpus():
         
 
 def Word2Vec(corpus: typing.Generator | None = None) -> gensim.models.Word2Vec:
-    W2V = gensim.models.Word2Vec(sentences=corpus, min_count= 20, window=5,vector_size=100, epochs= 5, sg=1, workers= os.cpu_count()*2)
+    W2V = gensim.models.Word2Vec(sentences=corpus, min_count= 20, window=5,vector_size=100, epochs= 5, sg=1, workers= 1)
     return W2V
 
 
